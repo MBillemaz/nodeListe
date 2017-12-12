@@ -1,14 +1,52 @@
 <html>
     <body>
-        <form id="helloForm">
+        <form id="addUser" action="/add" method="post">
             <div>
                 <label for="name">Name:</label>
                 <input type="text" name="name"/>
             </div>
             <div>
-                <input type="submit" value="OK"/>
+                <label for="prenom">Prénom:</label>
+                <input type="text" name="prenom"/>
+            </div>
+            <div>
+                <label for="adresse">adresse:</label>
+                <input type="text" name="adresse"/>
+            </div>
+            <div>
+                <label for="pseudo">Pseudo:</label>
+                <input type="text" name="pseudo"/>
+            </div>
+            <div>
+                <label for="mail">Mail:</label>
+                <input type="text" name="mail"/>
+            </div>
+            <div>
+                <input  type="submit" value="Ajouter"/>
             </div>
         </form>
         <div id="response"></div>
     </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>    
+
+    $("#addUser").submit((e) => {    
+        e.preventDefault();     
+        $.ajax({
+            url: "/add",
+            method: "post",
+            data: $("#addUser").serializeArray(),
+            success (data, code){
+                $("#response").text('Utilisateur ajouté');
+            },
+            error (error, code){
+                $("#response").text("L'ajout à échoué");
+            }
+        })
+
+        
+    })
+    
+</script>
