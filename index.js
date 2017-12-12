@@ -10,10 +10,11 @@ const json2csv = require('json2csv');
 const dbPath = "db/users.csv";
 
 var urlParser = bodyParser.urlencoded({extended: true});
+
 const hostname = '127.0.0.1';
 const port = '8080';
 
-app.use("/app/src", express.static('/app/src'));
+app.use('/app/src', express.static('app/src'));
 
 app.get('/', (req, res) => {
     fs.readFile("app/src/template/index.html", (err, data) => {
@@ -41,12 +42,13 @@ app.post("/add", urlParser, (req, res) => {
         fs.writeFile(dbPath, result, function(err) {
             if (err) res.status(500).send(err);
         });
+
         res.send();
     }
     catch (err){
         res.status(500).send(err);
     }
-    
+
 })
 
 app.get("/liste", (req, res) => {
