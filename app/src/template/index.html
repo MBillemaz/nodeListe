@@ -88,8 +88,13 @@
                 method: "post",
                 data: {select : array},
                 success: (data, code) => {
+                var html;
+                if (data.length == 0){
+                    html = "Aucun utilisateur référencé";
+                }
+                else {
                     var html = "<table class=\"table\"> <tr> <th scope=\"col\"> Select </th>";
-                    Object.keys(data[0]).forEach(column => html += ("<th scope=\"row\">" + column + "</th>"));
+                    Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
                     html += "</tr>";
                     data.forEach((row, index) => {
                         html += "<tr> <td> <input type='checkbox' name='select' value='" + index + "'/> </td>";
@@ -101,10 +106,11 @@
 
                     })
                     html += "<div> <button onClick='del()'>Delete</button> </div>";
+                }
                     $('.content').html(html);
                 },
             error(error, code){
-                console.log("fje");
+                console.log(error);
             }
             })
         }

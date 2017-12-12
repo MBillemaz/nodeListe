@@ -65,8 +65,10 @@ app.get("/liste", (req, res) => {
 })
 
 app.post("/delete",urlParser, (req, res) => {
+    
     var array = req.body.select;
     var newExcel = [];
+   
     try {
         excel = fs.readFileSync(dbPath, {encoding: "utf8"});
         excel = csv2json.toSchemaObject(excel, {delimiter: ";"});
@@ -74,18 +76,18 @@ app.post("/delete",urlParser, (req, res) => {
     catch (err){
         excel = [];
     }
+    var fields = Object.keys(excel[0]).map(champ => champ);
 
     excel.forEach((elem, index) => {
-        if(array.indexOf(index == -1)){
-            console.log(array, index, array.indexOf(index)  -1);
+        console.log(array, index.toString());
+        if(array.indexOf(index.toString()) == -1){
             newExcel.push(elem);
         }
     })
-    var result = json2csv({data: newExcel, fields: array, del: ";", quotes: ''});  
+    var result = json2csv({data: newExcel, fields: fields, del: ";", quotes: ''});  
     fs.writeFile(dbPath, result, function(err) {
         if (err) res.status(500).send(err);
     });
-    console.log(newExcel);
     res.send(newExcel);
 
 })
