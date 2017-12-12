@@ -54,8 +54,8 @@
                     html = "Aucun utilisateur référencé";
                 }
                 else {
-                html = "<table> <tr> <th> Select </th>";
-                Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
+                html = "<table class=\"table\"> <tr> <th scope=\"col\"> Select </th>";
+                Object.keys(data[0]).forEach(column => html += ("<th scope=\"row\">" + column + "</th>"));
                 html += "</tr>";
                 data.forEach((row, index) => {
                     html += "<tr> <td> <input type='checkbox' name='select' value=" + index + " /> </td>";
@@ -63,7 +63,7 @@
                         html += ("<td>" + row[e] + "</td>");
                     })
                     html += "</tr>";
-                    
+
 
                 })
                 html += "<div> <button onClick='del()'>Delete</button> </div>";
@@ -72,7 +72,7 @@
             },
             error(error, code){
                 console.log(error);
-            } 
+            }
         })
     }
 
@@ -88,8 +88,8 @@
                 method: "post",
                 data: {select : array},
                 success: (data, code) => {
-                    var html = "<table> <tr> <th> Select </th>";
-                    Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
+                    var html = "<table class=\"table\"> <tr> <th scope=\"col\"> Select </th>";
+                    Object.keys(data[0]).forEach(column => html += ("<th scope=\"row\">" + column + "</th>"));
                     html += "</tr>";
                     data.forEach((row, index) => {
                         html += "<tr> <td> <input type='checkbox' name='select' value='" + index + "'/> </td>";
@@ -97,7 +97,7 @@
                             html += ("<td>" + row[e] + "</td>");
                         })
                         html += "</tr>";
-                        
+
 
                     })
                     html += "<div> <button onClick='del()'>Delete</button> </div>";
@@ -105,13 +105,13 @@
                 },
             error(error, code){
                 console.log("fje");
-            } 
+            }
             })
         }
     }
 
-    $("#addUser").submit((e) => {    
-        e.preventDefault();     
+    $("#addUser").submit((e) => {
+        e.preventDefault();
         $.ajax({
             url: "/add",
             method: "post",
