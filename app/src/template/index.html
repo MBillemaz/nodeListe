@@ -77,42 +77,46 @@
     }
 
     function del() {
-        var selected = $("input:checkbox[name=select]:checked");
-        var array = []
-        selected.each(e => array.push(e));
-        console.log(array);
-        if (selected.length > 0){
-            //get index of each selected row
-            $.ajax({
-                url: "/delete",
-                method: "post",
-                data: {select : array},
-                success: (data, code) => {
-                var html;
-                if (data.length == 0){
-                    html = "Aucun utilisateur référencé";
-                }
-                else {
-                    var html = "<table class=\"table\"> <tr> <th scope=\"col\"> Select </th>";
-                    Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
-                    html += "</tr>";
-                    data.forEach((row, index) => {
-                        html += "<tr> <td> <input type='checkbox' name='select' value='" + index + "'/> </td>";
-                        Object.keys(row).forEach(e => {
-                            html += ("<td>" + row[e] + "</td>");
-                        })
-                        html += "</tr>";
+      if (confirm("Are you sure?")) {
+          document.body.style.backgroundColor="#ccc";
+
+          var selected = $("input:checkbox[name=select]:checked");
+          var array = []
+          selected.each(e => array.push(e));
+          console.log(array);
+          if (selected.length > 0){
+              //get index of each selected row
+              $.ajax({
+                  url: "/delete",
+                  method: "post",
+                  data: {select : array},
+                  success: (data, code) => {
+                  var html;
+                  if (data.length == 0){
+                      html = "Aucun utilisateur référencé";
+                  }
+                  else {
+                      var html = "<table class=\"table\"> <tr> <th scope=\"col\"> Select </th>";
+                      Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
+                      html += "</tr>";
+                      data.forEach((row, index) => {
+                          html += "<tr> <td> <input type='checkbox' name='select' value='" + index + "'/> </td>";
+                          Object.keys(row).forEach(e => {
+                              html += ("<td>" + row[e] + "</td>");
+                          })
+                          html += "</tr>";
 
 
-                    })
-                    html += "<div> <button onClick='del()'>Delete</button> </div>";
-                }
-                    $('.content').html(html);
-                },
-            error(error, code){
-                console.log(error);
-            }
-            })
+                      })
+                      html += "<div> <button onClick='del()'>Delete</button> </div>";
+                  }
+                      $('.content').html(html);
+                  },
+              error(error, code){
+                  console.log(error);
+              }
+              })
+          }
         }
     }
 
