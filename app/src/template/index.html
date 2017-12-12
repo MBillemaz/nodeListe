@@ -88,6 +88,11 @@
                 method: "post",
                 data: {select : array},
                 success: (data, code) => {
+                var html;
+                if (data.length == 0){
+                    html = "Aucun utilisateur référencé";
+                }
+                else {
                     var html = "<table> <tr> <th> Select </th>";
                     Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
                     html += "</tr>";
@@ -101,10 +106,11 @@
 
                     })
                     html += "<div> <button onClick='del()'>Delete</button> </div>";
+                }
                     $('.content').html(html);
                 },
             error(error, code){
-                console.log("fje");
+                console.log(error);
             } 
             })
         }
