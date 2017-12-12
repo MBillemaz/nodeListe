@@ -10,10 +10,11 @@ const json2csv = require('json2csv');
 const dbPath = "db/users.csv";
 
 var urlParser = bodyParser.urlencoded({extended: true});
+
 const hostname = '127.0.0.1';
 const port = '8080';
 
-app.use("/app/src", express.static('/app/src'));
+app.use('/app/src', express.static('app/src'));
 
 app.get('/', (req, res) => {
     fs.readFile("app/src/template/index.html", (err, data) => {
@@ -24,8 +25,8 @@ app.get('/', (req, res) => {
 })
 
 app.post("/add", urlParser, (req, res) => {
-    var array = Object.keys(req.body).map(champ => champ);
-    console.log(array);
+    var array = Object.keys(req.body);
+
     try {
         //Try to open csv file
         var excel;
@@ -37,20 +38,20 @@ app.post("/add", urlParser, (req, res) => {
             excel = [];
         }
         excel.push(req.body);
-        console.log(excel); 
-        var result = json2csv({data: excel, fields: array});     
-        console.log(result);
+
+        var result = json2csv({data: excel, fields: array});
+
         fs.writeFile(dbPath, result, function(err) {
             if (err) throw err;
         });
-        
+
         res.send();
     }
     catch (err){
         console.log(err);
         res.status(500).send(err);
     }
-    
+
 })
 
 app.listen(port);
