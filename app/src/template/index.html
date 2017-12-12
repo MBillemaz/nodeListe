@@ -1,36 +1,109 @@
 <html>
     <body>
-        <form id="addUser" action="/add" method="post">
-            <div>
-                <label for="name">Name:</label>
-                <input type="text" name="name"/>
-            </div>
-            <div>
-                <label for="prenom">Prénom:</label>
-                <input type="text" name="prenom"/>
-            </div>
-            <div>
-                <label for="adresse">adresse:</label>
-                <input type="text" name="adresse"/>
-            </div>
-            <div>
-                <label for="pseudo">Pseudo:</label>
-                <input type="text" name="pseudo"/>
-            </div>
-            <div>
-                <label for="mail">Mail:</label>
-                <input type="text" name="mail"/>
-            </div>
-            <div>
-                <input  type="submit" value="Ajouter"/>
-            </div>
-        </form>
-        <div id="response"></div>
+        <div class="menu">
+            <button onClick="goListe()">Liste</button>
+            <button><a href="/">Ajouter</a></button>
+        </div>
+        <div class="content">
+            <form id="addUser">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name"/>
+                </div>
+                <div>
+                    <label for="prenom">Prénom:</label>
+                    <input type="text" name="prenom"/>
+                </div>
+                <div>
+                    <label for="adresse">adresse:</label>
+                    <input type="text" name="adresse"/>
+                </div>
+                <div>
+                    <label for="pseudo">Pseudo:</label>
+                    <input type="text" name="pseudo"/>
+                </div>
+                <div>
+                    <label for="mail">Mail:</label>
+                    <input type="text" name="mail"/>
+                </div>
+                <div>
+                    <input  type="submit" value="Ajouter"/>
+                </div>
+            </form>
+            <div id="response"></div>
+        </div>
     </body>
 </html>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>    
+
+    function goListe() {
+        $.ajax({
+            url: "/liste",
+            method: "get",
+            success (data, code){
+                var html;
+                console.log(data);
+                if (data.length == 0){
+                    html = "Aucun utilisateur référencé";
+                }
+                else {
+                html = "<table> <tr> <th> Select </th>";
+                Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
+                html += "</tr>";
+                data.forEach((row, index) => {
+                    html += "<tr> <td> <input type='checkbox' name='select' value=" + index + " /> </td>";
+                    Object.keys(row).forEach(e => {
+                        html += ("<td>" + row[e] + "</td>");
+                    })
+                    html += "</tr>";
+                    
+
+                })
+                html += "<div> <button onClick='del()'>Delete</button> </div>";
+            }
+                $('.content').html(html);
+            },
+            error(error, code){
+                console.log(error);
+            } 
+        })
+    }
+
+    function del() {
+        var selected = $("input:checkbox[name=select]:checked");
+        var array = []
+        selected.each(e => array.push(e));
+        console.log(array);
+        if (selected.length > 0){
+            //get index of each selected row
+            $.ajax({
+                url: "/delete",
+                method: "post",
+                data: {select : array},
+                success: (data, code) => {
+                    var html = "<table> <tr> <th> Select </th>";
+                    Object.keys(data[0]).forEach(column => html += ("<th>" + column + "</th>"));
+                    html += "</tr>";
+                    data.forEach((row, index) => {
+                        html += "<tr> <td> <input type='checkbox' name='select' value='" + index + "'/> </td>";
+                        Object.keys(row).forEach(e => {
+                            html += ("<td>" + row[e] + "</td>");
+                        })
+                        html += "</tr>";
+                        
+
+                    })
+                    html += "<div> <button onClick='del()'>Delete</button> </div>";
+                    $('.content').html(html);
+                },
+            error(error, code){
+                console.log("fje");
+            } 
+            })
+        }
+    }
 
     $("#addUser").submit((e) => {    
         e.preventDefault();     
