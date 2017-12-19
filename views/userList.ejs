@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>User list</title>
+        <link rel="stylesheet" type="text/css" href="app/src/css/main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="content">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Name</th>
+                <th>Firstname</th>
+                <th>Address</th>
+                <th>Pseudo</th>
+                <th>Mail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (var i = 0; i < users.length; i++ ) { %>
+                <tr>
+                  <th scope="row"><%=i%></th>
+                  <td><p><%= users[i].name %></p></td>
+                  <td><p><%= users[i].firstname %></p></td>
+                  <td><p><%= users[i].address %></p></td>
+                  <td><p><%= users[i].pseudo %></p></td>
+                  <td><p><%= users[i].mail %></p></td>
+                </tr>
+              <% } %>
+          </tbody>
+        </table>
+
+    </body>
+</html>
